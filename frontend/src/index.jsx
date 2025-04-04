@@ -1,21 +1,25 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { applyMiddleware, createStore } from 'redux'
-import { Provider } from 'react-redux'
+import axios from 'axios'
+import { toastr } from 'react-redux-toastr'
+import { reset as resetForm } from 'redux-form'
 
-import promise from 'redux-promise'
+const BASE_URL = 'http://localhost:3003/api'
 
-import App from './main/app'
-import reducers from './main/reducers'
+export function getList() {
+    const request = axios.get(`${BASE_URL}/billingCycles`)
+    return {
+        type: 'BILLING_CYCLES_FETCHED',
+        payload: request
+    }
+}
 
-const devTools = window.__REDUX_DEVTOOLS_EXTENSION__ 
-    && window.__REDUX_DEVTOOLS_EXTENSION__()
-
-const store = applyMiddleware(promise)(createStore)(reducers, devTools)
-
-ReactDOM.render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
-    document.getElementById('app')
-)
+export function create(values) {
+    return dispatch => {
+        axios.post(`${BASE_URL}/billingCycles`, values)
+            .then(resp => {
+                toastr.success('Sucesso', 'Operação Realizada com sucesso.')
+            })
+            .catch(e => {
+                e.response.data.errors.forEach(error => toastr.error('Erro', error))
+            })
+    }
+}
