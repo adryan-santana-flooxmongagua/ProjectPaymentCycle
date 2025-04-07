@@ -6,8 +6,7 @@ import Grid from '../common/layout/grid'
 import Input from '../common/form/input'
 import If from '../common/operator/if'
 
-class CreditList extends Component {
-
+class ItemList extends Component {
 
     add(index, item = {}) {
         if(!this.props.readOnly) {
@@ -50,7 +49,7 @@ class CreditList extends Component {
             </tr>
         ))
     }
-    
+
     render() {
         return (
             <Grid cols={this.props.cols}>
@@ -78,4 +77,4 @@ class CreditList extends Component {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({ arrayInsert, arrayRemove }, dispatch)
-export default connect(null, mapDispatchToProps)(CreditList)
+export default connect(null, mapDispatchToProps)(ItemList)
